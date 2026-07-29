@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "libs-repro-audit"
+version = "2.0.0"
+description = "Executable reproducibility-audit record for CF-LIBS/LIPS quantification (checkpoints A1-A5): regenerates Tables 1-2, Figure 2, the electron-density scale checks and the equation invertibility audit from printed values."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [
+  { name = "Homa Saeidfirozeh" },
+  { name = "Martin Ferus" },
+]
+keywords = ["LIBS", "LIPS", "calibration-free", "reproducibility", "metrology", "Stark broadening"]
+dependencies = []
+
+[project.optional-dependencies]
+figures = ["matplotlib>=3.5"]
+dev = ["pytest>=7", "matplotlib>=3.5"]
+
+[project.scripts]
+libs-audit = "libs_repro_audit.cli:main"
+libs-audit-extract = "libs_repro_audit.extract:main"
+libs-repro-audit = "libs_repro_audit.report:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+libs_repro_audit = ["*.json"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
