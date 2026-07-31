@@ -4,9 +4,8 @@ Each function implements one deterministic check from the five-checkpoint
 framework (A1-A5) described in:
 
     Homa Saeidfirozeh and M. Ferus,
-    "A reproducibility-audit framework for calibration-free LIBS/LIPS
-    quantification: proposed minimum reporting requirements and a worked
-    case study."
+    "Can a published CF-LIBS quantification be reconstructed? A
+    reproducibility-audit framework and reporting checklist."
 
 All equation numbers below refer to that article. The functions operate
 only on printed values; no raw spectra are required.

@@ -1,14 +1,14 @@
-# libs-repro-audit
+# CF-LIBS Reproducibility Audit
 
-![audit-checks](https://github.com/homasf/libs-repro-audit/actions/workflows/ci.yml/badge.svg)
+![audit-checks](https://github.com/homasf/cf-libs-repro-audit/actions/workflows/ci.yml/badge.svg)
 ![python](https://img.shields.io/badge/python-3.9%2B-3776AB?logo=python&logoColor=white)
 ![license](https://img.shields.io/badge/license-MIT-green)
 
 Executable, machine-actionable record accompanying:
 
-> Homa Saeidfirozeh and M. Ferus, *A reproducibility-audit framework for
-> calibration-free LIBS/LIPS quantification: proposed minimum reporting
-> requirements and a worked case study.*
+> Homa Saeidfirozeh and M. Ferus, *Can a published CF-LIBS
+> quantification be reconstructed? A reproducibility-audit framework and
+> reporting checklist.*
 
 The article proposes a five-checkpoint audit (A1–A5) for testing whether a
 published CF-LIBS/LIPS calculation chain can be reconstructed from the
@@ -38,8 +38,8 @@ sample concentrations or author intent.
 ## Quick start
 
 ```bash
-git clone https://github.com/homasf/libs-repro-audit.git
-cd libs-repro-audit
+git clone https://github.com/homasf/cf-libs-repro-audit.git
+cd cf-libs-repro-audit
 python -m pip install -e ".[dev]"
 
 # regenerate all tables and checks
@@ -78,16 +78,16 @@ a command-line interface:
 
 ```bash
 # audit the bundled worked example
-libs-audit --worked-example
+cf-libs-audit --worked-example
 
 # audit another paper: copy the template, fill it with printed values
 cp examples/template.json mypaper.json
 #   ... transcribe values from the paper's tables/equations ...
-libs-audit mypaper.json -o mypaper_report.html   # styled, self-contained HTML
-libs-audit mypaper.json -o mypaper_report.md     # plain Markdown
+cf-libs-audit mypaper.json -o mypaper_report.html   # styled, self-contained HTML
+cf-libs-audit mypaper.json -o mypaper_report.md     # plain Markdown
 
 # in CI: exit non-zero if anything fails to reproduce
-libs-audit mypaper.json --strict
+cf-libs-audit mypaper.json --strict
 ```
 
 The audit record (`examples/template.json`) is a JSON file of the paper's
@@ -110,13 +110,13 @@ this explicitly.
 
 Transcribing values from a PDF is the tedious step, and it is the one
 place a language model helps. `AGENT_GUIDE.md` defines a strict two-stage
-workflow: the `libs-audit-extract` command drafts the audit record from the paper's
+workflow: the `cf-libs-audit-extract` command drafts the audit record from the paper's
 text via the Anthropic API using a constrained extraction prompt (no estimation, conflicts recorded not resolved, source
 note per value), a human verifies every number against the paper, and the
 deterministic engine — never the model — renders the verdict. Drafts are
-stamped UNVERIFIED and `libs-audit` prints a warning until a human replaces
+stamped UNVERIFIED and `cf-libs-audit` prints a warning until a human replaces
 the stamp with their name and date. Anyone can
-rerun `libs-audit` on the same record and obtain the same report.
+rerun `cf-libs-audit` on the same record and obtain the same report.
 
 ## Applying the audit to another study
 

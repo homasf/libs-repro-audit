@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite both the software (below) and the accompanying article."
-title: "libs-repro-audit: executable reproducibility-audit record for CF-LIBS/LIPS quantification"
+title: "CF-LIBS Reproducibility Audit: executable A1-A5 audit engine for CF-LIBS/LIPS quantification"
 type: software
 version: 2.0.0
 date-released: 2026-07-29
@@ -14,10 +14,10 @@ authors:
     given-names: Martin
     orcid: "https://orcid.org/0000-0003-4008-2920"
     affiliation: "J. Heyrovsky Institute of Physical Chemistry, Czech Academy of Sciences"
-repository-code: "https://github.com/homasf/libs-repro-audit"
+repository-code: "https://github.com/homasf/cf-libs-repro-audit"
 preferred-citation:
   type: article
-  title: "A reproducibility-audit framework for calibration-free LIBS/LIPS quantification: proposed minimum reporting requirements and a worked case study"
+  title: "Can a published CF-LIBS quantification be reconstructed? A reproducibility-audit framework and reporting checklist"
   authors:
     - family-names: Saeidfirozeh
       given-names: Homa

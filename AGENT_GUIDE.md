@@ -8,7 +8,7 @@ requirements, and the design keeps them strictly separate:
    where an AI assistant (Claude, GPT, etc.) genuinely helps.
 2. **Judgment** — deciding whether the numerical chain reproduces. This is
    pure deterministic arithmetic and is done ONLY by the engine
-   (`libs-audit`), never by the language model.
+   (`cf-libs-audit`), never by the language model.
 
 This separation matters. A language model can misread a table; the engine
 cannot mis-divide. So the model proposes a record, a **human verifies every
@@ -21,7 +21,7 @@ can rerun.
 ```
 PDF ──(LLM extraction prompt below)──> draft record.json
       ──(human checks every value against the PDF; fills 'source' notes)──>
-      verified record.json ──(libs-audit record.json -o report.md)──>
+      verified record.json ──(cf-libs-audit record.json -o report.md)──>
       deterministic PASS/FAIL report
 ```
 
@@ -30,10 +30,10 @@ PDF ──(LLM extraction prompt below)──> draft record.json
 ```bash
 export ANTHROPIC_API_KEY=sk-ant-...     # read from env, never stored
 pdftotext paper.pdf paper.txt
-libs-audit-extract paper.txt -o draft_record.json
+cf-libs-audit-extract paper.txt -o draft_record.json
 ```
 
-The draft is stamped `"verification": "DRAFT — UNVERIFIED"`; `libs-audit`
+The draft is stamped `"verification": "DRAFT — UNVERIFIED"`; `cf-libs-audit`
 prints a prominent warning for such records until a human replaces the stamp
 with `verified by <name>, <date>` after completing the checklist below.
 

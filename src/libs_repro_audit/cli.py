@@ -1,10 +1,10 @@
 """Command-line interface.
 
 Usage:
-    libs-audit examples/elsaeed2025_scirep.json          # console summary
-    libs-audit myrecord.json -o report.html              # styled HTML report
-    libs-audit myrecord.json -o report.md                # Markdown report
-    libs-audit --worked-example --strict                 # CI gate
+    cf-libs-audit examples/elsaeed2025_scirep.json          # console summary
+    cf-libs-audit myrecord.json -o report.html              # styled HTML report
+    cf-libs-audit myrecord.json -o report.md                # Markdown report
+    cf-libs-audit --worked-example --strict                 # CI gate
 """
 
 from __future__ import annotations
@@ -32,7 +32,7 @@ def _banner(color: bool) -> str:
     line = "─" * 62
     return (_c(_DIM, f"┌{line}┐\n", color)
             + _c(_DIM, "│ ", color)
-            + _c(_BOLD, f"libs-repro-audit v{__version__}", color)
+            + _c(_BOLD, f"CF-LIBS Reproducibility Audit v{__version__}", color)
             + "  ·  CF-LIBS/LIPS reproducibility audit (A1–A5)"
             + _c(_DIM, " │\n", color)
             + _c(_DIM, f"└{line}┘", color))
@@ -48,7 +48,7 @@ def _worked_example_path() -> Path:
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(
-        prog="libs-audit",
+        prog="cf-libs-audit",
         description="Rerun the A1-A5 reproducibility checks on a "
                     "CF-LIBS/LIPS audit record (JSON of printed values).")
     ap.add_argument("record", nargs="?", help="path to an audit-record JSON")

@@ -1,19 +1,19 @@
-"""AI-assisted extraction agent (``libs-audit-extract``).
+"""AI-assisted extraction agent (``cf-libs-audit-extract``).
 
 Drafts an audit record from a paper's text using the Anthropic API, under
 the strict extraction contract of AGENT_GUIDE.md. The agent NEVER judges
 reproducibility — it only transcribes printed values into the record
 schema. Every draft it writes is stamped ``"verification": "DRAFT —
-UNVERIFIED"`` and ``libs-audit`` refuses to treat such a record as final
+UNVERIFIED"`` and ``cf-libs-audit`` refuses to treat such a record as final
 until a human has checked each value against the PDF and replaced the
 stamp with their name and date.
 
 Usage:
     export ANTHROPIC_API_KEY=sk-ant-...
     pdftotext paper.pdf paper.txt          # or any text export
-    libs-audit-extract paper.txt -o draft_record.json
+    cf-libs-audit-extract paper.txt -o draft_record.json
     #  -> verify every value against the PDF, fill 'verification'
-    libs-audit draft_record.json -o report.html
+    cf-libs-audit draft_record.json -o report.html
 
 Requires the ``requests``-free standard library only.
 """
@@ -89,7 +89,7 @@ def _call_api(api_key: str, paper_text: str) -> str:
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(
-        prog="libs-audit-extract",
+        prog="cf-libs-audit-extract",
         description="Draft an audit record from paper text with an LLM. "
                     "The draft is UNVERIFIED until a human checks every "
                     "value against the PDF (see AGENT_GUIDE.md).")
@@ -130,7 +130,7 @@ def main(argv: list[str] | None = None) -> int:
     print(f"draft written to {args.output}")
     print("NEXT STEP (required): verify every value against the paper — "
           "see the checklist in AGENT_GUIDE.md — before running "
-          f"'libs-audit {args.output}'.")
+          f"'cf-libs-audit {args.output}'.")
     return 0
 
 

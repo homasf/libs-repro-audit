@@ -1,5 +1,5 @@
 {
-  "description": "All numerical inputs are values printed in the case-study article (El-Saeed et al., Sci. Rep. 15 (2025) 19949, ref. [29] of the audit paper) as transcribed in Saeidfirozeh & Ferus, 'A reproducibility-audit framework for calibration-free LIBS/LIPS quantification'. No raw spectra are used.",
+  "description": "All numerical inputs are values printed in the case-study article (El-Saeed et al., Sci. Rep. 15 (2025) 19949, ref. [29] of the audit paper) as transcribed in Saeidfirozeh & Ferus, 'Can a published CF-LIBS quantification be reconstructed? A reproducibility-audit framework and reporting checklist'. No raw spectra are used.",
   "validation_table": {
     "source": "Table 6 of ref. [29]; audit paper Table 1",
     "units": "ppm",

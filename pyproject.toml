@@ -3,9 +3,9 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "libs-repro-audit"
+name = "cf-libs-repro-audit"
 version = "2.0.0"
-description = "Executable reproducibility-audit record for CF-LIBS/LIPS quantification (checkpoints A1-A5): regenerates Tables 1-2, Figure 2, the electron-density scale checks and the equation invertibility audit from printed values."
+description = "CF-LIBS Reproducibility Audit: executable A1-A5 audit engine that reconstructs quantitative claims from printed CF-LIBS/LIPS records."
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
@@ -20,7 +20,14 @@ dependencies = []
 figures = ["matplotlib>=3.5"]
 dev = ["pytest>=7", "matplotlib>=3.5"]
 
+[project.urls]
+Homepage = "https://github.com/homasf/cf-libs-repro-audit"
+Repository = "https://github.com/homasf/cf-libs-repro-audit"
+Issues = "https://github.com/homasf/cf-libs-repro-audit/issues"
+
 [project.scripts]
+cf-libs-audit = "libs_repro_audit.cli:main"
+cf-libs-audit-extract = "libs_repro_audit.extract:main"
 libs-audit = "libs_repro_audit.cli:main"
 libs-audit-extract = "libs_repro_audit.extract:main"
 libs-repro-audit = "libs_repro_audit.report:main"
