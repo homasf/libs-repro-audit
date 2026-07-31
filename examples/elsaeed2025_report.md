@@ -1,7 +1,7 @@
 # CF-LIBS/LIPS reproducibility-audit report
 
 **Audited publication:** Calibration-free picosecond LIPS for quantifying heavy metals in soils near Egyptian industrial sites
-**DOI:** 10.1038/s41598-025-04395-5  |  **Record transcribed by:** Homa Saeidfirozeh, M. Ferus (audit-framework paper) on 2026-07-29
+**DOI:** 10.1038/s41598-025-04395-5  |  **Record transcribed by:** Homa Saeidfirozeh on 2026-07-29
 
 This report tests only whether the published numerical chain can be reconstructed from the printed values supplied in the audit record. It does not assess raw data, true concentrations or author intent, and a FAIL is a reproducibility finding, not an allegation.
 
