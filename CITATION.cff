@@ -1,26 +1,45 @@
 cff-version: 1.2.0
-message: "If you use this software, please cite both the software (below) and the accompanying article."
-title: "CF-LIBS Reproducibility Audit: executable A1-A5 audit engine for CF-LIBS/LIPS quantification"
+message: >-
+  If you use this software, please cite the software. It accompanies the
+  article "Can a published CF-LIBS quantification be reconstructed? A
+  reproducibility-audit framework and reporting checklist" by Homa
+  Saeidfirozeh and Martin Ferus.
+title: >-
+  CF-LIBS Reproducibility Audit: an executable A1-A5 audit engine for
+  CF-LIBS/LIPS quantification
 type: software
 version: 2.0.0
-date-released: 2026-07-29
+date-released: 2026-07-07
 license: MIT
 authors:
   - family-names: Saeidfirozeh
     given-names: Homa
     orcid: "https://orcid.org/0000-0002-6687-1496"
-    affiliation: "J. Heyrovsky Institute of Physical Chemistry, Czech Academy of Sciences"
-  - family-names: Ferus
-    given-names: Martin
-    orcid: "https://orcid.org/0000-0003-4008-2920"
-    affiliation: "J. Heyrovsky Institute of Physical Chemistry, Czech Academy of Sciences"
+    affiliation: >-
+      J. Heyrovský Institute of Physical Chemistry, Czech Academy of Sciences
 repository-code: "https://github.com/homasf/cf-libs-repro-audit"
-preferred-citation:
-  type: article
-  title: "Can a published CF-LIBS quantification be reconstructed? A reproducibility-audit framework and reporting checklist"
-  authors:
-    - family-names: Saeidfirozeh
-      given-names: Homa
-    - family-names: Ferus
-      given-names: Martin
-  year: 2026
+url: "https://github.com/homasf/cf-libs-repro-audit"
+abstract: >-
+  An executable, paper-independent A1-A5 reproducibility-audit engine for
+  testing whether quantitative CF-LIBS/LIPS calculation chains can be
+  reconstructed from values printed in a publication. The software produces
+  deterministic validation, linewidth, scale, invertibility and reporting
+  checks and includes a worked example with automated tests.
+keywords:
+  - CF-LIBS
+  - LIPS
+  - reproducibility
+  - spectroscopy
+  - metrology
+  - Stark broadening
+references:
+  - type: article
+    title: >-
+      Can a published CF-LIBS quantification be reconstructed? A
+      reproducibility-audit framework and reporting checklist
+    authors:
+      - family-names: Saeidfirozeh
+        given-names: Homa
+      - family-names: Ferus
+        given-names: Martin
+    year: 2026
