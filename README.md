@@ -1,138 +1,154 @@
 # CF-LIBS Reproducibility Audit
 
-![audit-checks](https://github.com/homasf/cf-libs-repro-audit/actions/workflows/ci.yml/badge.svg)
+[![audit-checks](https://github.com/homasf/cf-libs-repro-audit/actions/workflows/ci.yml/badge.svg)](https://github.com/homasf/cf-libs-repro-audit/actions/workflows/ci.yml)
 ![python](https://img.shields.io/badge/python-3.9%2B-3776AB?logo=python&logoColor=white)
+![version](https://img.shields.io/badge/version-2.0.0-blue)
 ![license](https://img.shields.io/badge/license-MIT-green)
 
-Executable, machine-actionable record accompanying:
+**CF-LIBS Reproducibility Audit** is an executable A1–A5 audit engine for
+checking whether quantitative claims in a published calibration-free
+LIBS/LIPS study can be reconstructed from the values printed in the article.
 
-> Homa Saeidfirozeh and M. Ferus, *Can a published CF-LIBS
+**Software author:** Homa Saeidfirozeh  
+**Version:** 2.0.0  
+**Release date:** 7 July 2026  
+**Repository:** `homasf/cf-libs-repro-audit`
+
+The software accompanies the article:
+
+> Homa Saeidfirozeh and Martin Ferus, *Can a published CF-LIBS
 > quantification be reconstructed? A reproducibility-audit framework and
 > reporting checklist.*
 
-The article proposes a five-checkpoint audit (A1–A5) for testing whether a
-published CF-LIBS/LIPS calculation chain can be reconstructed from the
-printed record, and its Table 3 asks quantitative studies to supply a
-machine-actionable supplement. This repository is that supplement for the
-audit paper itself: every numerical result in the paper is regenerated here
-from printed values only, under automated tests.
+The article's short title is *Reproducibility audit for CF-LIBS
+quantification*.
 
-**No raw spectra are used and no new measurements are made.** All inputs are
-central values printed in the case-study article (El-Saeed et al., *Sci.
-Rep.* 15 (2025) 19949) as transcribed in `data/printed_values.json`, with a
-source annotation for each block. The audit concerns internal numerical
-reproducibility of the published record only; it does not assess the true
-sample concentrations or author intent.
+## Scope
 
-## What is reproduced
+The software reads a machine-actionable JSON record containing values
+transcribed from a publication and reruns deterministic checks associated
+with five checkpoints:
 
-| Paper item | Checkpoint | Where |
+- **A1 — Linewidth provenance:** printed FWHM, Stark-width and instrumental-width checks.
+- **A2 — Plasma-parameter consistency:** units, normalizations and powers of ten.
+- **A3 — Plasma-model reporting:** LTE, optical-thinness/self-absorption, atomic-data provenance and related reporting flags.
+- **A4 — Concentration inversion:** invertibility and consistency of printed empirical equations.
+- **A5 — Validation:** signed relative deviations from independent comparison values and stated tolerances.
+
+The engine returns `PASS`, `FAIL`, `NOT_INVERTIBLE`, `NOT_REPORTED`,
+`REPORTED` and `INFO` results, with the arithmetic shown in Markdown or HTML.
+
+**No raw spectra are used and no new measurements are made.** A failure means
+that a claim is not reproducible from the values as printed; it is not an
+assessment of author intent, experimental misconduct or the true sample
+concentrations.
+
+## Worked example
+
+The bundled record audits El-Saeed et al., *Scientific Reports* 15 (2025)
+19949. From printed values only, the repository regenerates:
+
+| Paper item | Checkpoint | Implementation/output |
 |---|---|---|
-| Table 1 — signed relative deviations vs ICP-OES, Eq. (1) | A5 | `report.table1_rows`, `output/table1_signed_deviations.csv` |
-| Figure 2 — deviation bar chart with ±1% band | A5 | `scripts/make_figure2.py` |
-| Table 2 — Ca I 646.257 nm FWHM vs Stark Eq. (2), ratio *R* ≈ 1.15, effective *W*ₛ ≈ 0.044 nm | A1/A2 | `report.table2_rows`, `output/table2_linewidth_check.csv` |
-| Instrumental-width bound at R = 75,000 (< 0.5% change) | A1 | `audit.instrumental_fwhm`, `audit.quadrature_corrected_fwhm` |
-| Electron-density scale check, Eqs. (3)–(4): 10¹⁶ reproduces 65.03 / 136.95 ppm; 10¹⁷ does not | A2/A4 | `audit.ne_scale_check` |
-| Fe/Ni zero-slope equations are non-invertible; constants mismatch the test-sample parameters | A4 | `audit.LinearEquation` |
+| Table 1 — signed relative deviations versus ICP-OES | A5 | `report.table1_rows`, `output/table1_signed_deviations.csv` |
+| Figure 2 — deviation chart with the stated ±1% band | A5 | `scripts/make_figure2.py` |
+| Table 2 — Ca I 646.257 nm linewidth/Stark check | A1/A2 | `report.table2_rows`, `output/table2_linewidth_check.csv` |
+| Instrumental-width upper bound at $R=75{,}000$ | A1 | `audit.instrumental_fwhm`, `audit.quadrature_corrected_fwhm` |
+| Electron-density exponent check | A2/A4 | `audit.ne_scale_check` |
+| Fe/Ni zero-slope equation audit | A4 | `audit.LinearEquation` |
 
-## Quick start
+## Installation
+
+From PyPI, after the release is published:
+
+```bash
+python -m pip install cf-libs-repro-audit
+```
+
+For development from GitHub:
 
 ```bash
 git clone https://github.com/homasf/cf-libs-repro-audit.git
 cd cf-libs-repro-audit
 python -m pip install -e ".[dev]"
-
-# regenerate all tables and checks
-python -m libs_repro_audit
-
-# run the assertion suite (every printed number in the paper)
-pytest -v
-
-# regenerate Figure 2
-python scripts/make_figure2.py
 ```
 
-`python -m libs_repro_audit` prints Tables 1–2, the scale check and the
-invertibility audit to the console and writes CSV copies to `output/`.
+## Use
 
-## Design
-
-- `data/printed_values.json` — the machine-actionable record: every printed
-  input value with units, exponents and a provenance note. Changing a value
-  here and re-running `pytest` shows exactly which published numbers depend
-  on it.
-- `src/libs_repro_audit/audit.py` — one small, documented function per
-  deterministic check (Eq. (1) deviation, Eq. (2) Stark density, effective
-  Stark width, instrumental-width bound, linear-equation inversion and
-  invertibility, power-of-ten scale check).
-- `tests/test_audit.py` — assertions pinning each recalculated value to the
-  number printed in the paper. A failing test means the executable record no
-  longer reproduces the published tables — precisely the condition the
-  framework is designed to detect.
-- CI (GitHub Actions) reruns the suite on every push on Python 3.9 and 3.12.
-
-## Auditing ANY other CF-LIBS/LIPS paper (v2 engine)
-
-The repository now contains a general, paper-independent audit engine with
-a command-line interface:
+Audit the bundled worked example:
 
 ```bash
-# audit the bundled worked example
 cf-libs-audit --worked-example
+```
 
-# audit another paper: copy the template, fill it with printed values
+Write a styled HTML report:
+
+```bash
+cf-libs-audit --worked-example -o audit_report.html
+```
+
+Audit another paper:
+
+```bash
 cp examples/template.json mypaper.json
-#   ... transcribe values from the paper's tables/equations ...
-cf-libs-audit mypaper.json -o mypaper_report.html   # styled, self-contained HTML
-cf-libs-audit mypaper.json -o mypaper_report.md     # plain Markdown
+# Transcribe and verify the paper's printed values in mypaper.json.
+cf-libs-audit mypaper.json -o mypaper_report.html
+```
 
-# in CI: exit non-zero if anything fails to reproduce
+Use strict mode in continuous integration:
+
+```bash
 cf-libs-audit mypaper.json --strict
 ```
 
-The audit record (`examples/template.json`) is a JSON file of the paper's
-*printed* values — validation points and stated tolerance, Stark
-parameters and FWHMs, empirical-equation coefficients, candidate
-exponents, and reported/not-reported flags for LTE, self-absorption and
-atomic-data provenance. The engine reruns checkpoints A1–A5 and emits a
-Markdown report in which every check is labelled PASS, FAIL,
-NOT_INVERTIBLE or NOT_REPORTED, with the arithmetic shown.
-`examples/elsaeed2025_report.md` is the report the engine generates for
-the worked example; it reproduces all four findings of the framework
-paper automatically.
+Regenerate the manuscript tables and numerical checks:
 
-A FAIL means "not reproducible from the printed record" — typographical
-errors, rounding or unreported full-precision coefficients can all cause
-one, and all are resolvable by author clarification. The report text says
-this explicitly.
+```bash
+python -m libs_repro_audit
+```
+
+Regenerate Figure 2:
+
+```bash
+python scripts/make_figure2.py
+```
+
+Run the test suite:
+
+```bash
+python -m pytest -v
+```
+
+## Repository structure
+
+- `data/printed_values.json` — printed numerical inputs for the worked example.
+- `examples/template.json` — paper-independent audit-record template.
+- `examples/elsaeed2025_scirep.json` — verified worked-example record.
+- `src/libs_repro_audit/audit.py` — deterministic numerical functions.
+- `src/libs_repro_audit/engine.py` — general A1–A5 audit engine.
+- `src/libs_repro_audit/cli.py` — `cf-libs-audit` command-line interface.
+- `tests/` — assertions for the numerical results used in the article.
+- `.github/workflows/ci.yml` — tests on Python 3.9 and 3.12.
+- `.github/workflows/publish.yml` — trusted publication to PyPI from a GitHub Release.
 
 ## AI-assisted extraction
 
-Transcribing values from a PDF is the tedious step, and it is the one
-place a language model helps. `AGENT_GUIDE.md` defines a strict two-stage
-workflow: the `cf-libs-audit-extract` command drafts the audit record from the paper's
-text via the Anthropic API using a constrained extraction prompt (no estimation, conflicts recorded not resolved, source
-note per value), a human verifies every number against the paper, and the
-deterministic engine — never the model — renders the verdict. Drafts are
-stamped UNVERIFIED and `cf-libs-audit` prints a warning until a human replaces
-the stamp with their name and date. Anyone can
-rerun `cf-libs-audit` on the same record and obtain the same report.
+`cf-libs-audit-extract` can draft an audit record from a plain-text paper
+export. The draft is always stamped `UNVERIFIED`. A human must check every
+value against the publication before the deterministic audit is run. The
+language model performs transcription only; it never determines the audit
+verdict. See `AGENT_GUIDE.md`.
 
-## Applying the audit to another study
+## Citation
 
-The functions are generic. To audit a different CF-LIBS/LIPS paper, copy
-`data/printed_values.json`, replace the printed inputs (keeping the
-provenance notes), and rerun `python -m libs_repro_audit` and the relevant
-checks. The JSON schema is intentionally minimal: validation table,
-Stark parameters and linewidths, instrument resolving power, and the
-empirical concentration equations.
+The software author is **Homa Saeidfirozeh**. Use GitHub's **Cite this
+repository** control or the archived Zenodo DOI after it is minted. The
+machine-readable software metadata are in `CITATION.cff`.
 
-## Citing
-
-Cite the accompanying article and this software via the metadata in
-`CITATION.cff`. Add the archived-release DOI here after Zenodo mints the
-v2.0.0 record.
+The accompanying article is a separate research output authored by Homa
+Saeidfirozeh and Martin Ferus. It should be cited separately using its full
+journal citation when available.
 
 ## License
 
-MIT — see `LICENSE`.
+MIT License. See `LICENSE`.
